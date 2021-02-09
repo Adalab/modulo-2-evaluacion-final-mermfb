@@ -22,12 +22,10 @@ function getDataFromApi() {
       shows = data;
       console.log(shows);
       paintShows();
-      //añadimos llamada a función de pintar
-      //
     });
 }
 
-//PAINT
+//PAINT  //FALTA COMPROBAR FAVORITOS
 
 //constante para estructura //innerHTML o DOMavanzado
 //(crear ul con lis dentro de la section) (el ul solo una vez, el li tantas como resultados)
@@ -45,10 +43,14 @@ function paintShows() {
   //   }
 
   for (let show of shows) {
+    const id = show.show.id;
+    const name = show.show.name;
     const listItem = document.createElement("li");
+    listItem.setAttribute("class", "js-show");
+    listItem.setAttribute("id", id);
     list.appendChild(listItem);
     const itemTitle = document.createElement("h3");
-    let titleContent = document.createTextNode(show.show.name);
+    let titleContent = document.createTextNode(name);
     itemTitle.appendChild(titleContent);
     listItem.appendChild(itemTitle);
     let itemImage = document.createElement("img");
@@ -64,6 +66,79 @@ function paintShows() {
 
     console.log(listItem);
   }
+  listenShowsEvents();
 }
+
+//escuchar shows pintados
+
+//FAVORITES
+
+let favorites = [
+  {
+    externals: { tvrage: null, thetvdb: 357527, imdb: "tt7555294" },
+    genres: (3)[("Drama", "Action", "Crime")],
+    id: 38565,
+    image: {
+      medium:
+        "http://static.tvmaze.com/uploads/images/medium_portrait/260/650446.jpg",
+      original:
+        "http://static.tvmaze.com/uploads/images/original_untouched/260/650446.jpg",
+    },
+    language: "English",
+    name: "L.A.'s Finest",
+  },
+];
+
+function listenShowsEvents() {
+  const ShowElements = document.querySelectorAll(".js-show");
+  console.log(ShowElements);
+  for (let ShowElement of ShowElements) {
+    ShowElement.addEventListener("click", handleShow);
+  }
+  saveInLocalStorage();
+  getFromLocalStorage();
+}
+
+// está función comprueba si la paleta clickada está dentro de favoritos
+// - Si está lo debo sacar del array de favoritos
+// - Si no está lo debo añadir al array de favoritos
+function handleShow(ev) {
+  // obtengo el id de la paleta clickada
+  const clickedShowId = ev.currentTarget.id;
+  //   const favoritesFoundIndex = favorites.findIndex(function (favorite) {
+  //     return favorite.id === clickedShowId;
+  //   });
+  //   console.log("id del show clickado", clickedShowId);
+  //   const showFound = shows.find(function (show) {
+  //     return show.show.id === clickedShowId;
+  //   });
+  //   // para luego añadirlo al array de favoritos
+  //   favorites.push(showFound);
+  console.log(favorites);
+  paintShows();
+}
+
+//LOCAL STORAGE
+
+function saveInLocalStorage() {
+  const stringFavorites = JSON.stringify(favorites);
+  localStorage.setItem("favorites", stringFavorites);
+  console.log(stringFavorites);
+}
+
+function getFromLocalStorage() {
+  const localStorageFavorites = localStorage.getItem("favorites");
+  // siempre que cojo datos del local storage tengo que comprobar si son válidos
+  // es decir si es la primera vez que entro en la página
+  if (localStorageFavorites !== null) {
+    const arrayFavorites = JSON.parse(localStorageFavorites);
+    // lo guardo en la variable global de palettes
+    favorites = arrayFavorites;
+    // cada vez que modifico los arrays de palettes o de favorites vuelvo a pintar y a escuchar eventos
+    paintShows();
+    console.log(favorites);
+  }
+}
+console.log(favorites);
 
 buttonElement.addEventListener("click", getDataFromApi);
