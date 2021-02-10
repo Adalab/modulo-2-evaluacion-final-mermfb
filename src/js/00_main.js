@@ -13,12 +13,12 @@ const resetButton = document.querySelector(".resetButton");
 let shows = [];
 let favorites = [];
 
-//SEARCH
+// //SEARCH
 
 function getDataFromApi() {
   event.preventDefault();
   const inputValue = inputElement.value;
-  const url = `http://api.tvmaze.com/search/shows?q=${inputValue}`;
+  const url = `//api.tvmaze.com/search/shows?q=${inputValue}`;
 
   fetch(url)
     .then((response) => response.json())
@@ -156,7 +156,6 @@ function listenFavoritesEvents() {
 function handleShow(ev) {
   // obtengo el id del clickado
   const clickedShowId = parseInt(ev.currentTarget.id);
-  console.log("id del show clickado", clickedShowId);
   const favoritesFoundIndex = favorites.findIndex(function (favorite) {
     return favorite.show.id === clickedShowId;
   });
@@ -170,10 +169,8 @@ function handleShow(ev) {
       return show.show.id === clickedShowId;
     });
 
-    console.log(showFound);
     // para luego añadirlo al array de favoritos
     favorites.push(showFound);
-    console.log("Mis favoritas", favorites);
   } else {
     // si el findIndex me ha devuelto un número mayor o igual a 0 es que sí está en el array de favoritos
     favorites.splice(favoritesFoundIndex, 1);
