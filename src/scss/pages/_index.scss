@@ -8,6 +8,24 @@
 .js-showlist {
   list-style: none;
 }
+
+.js-show {
+  margin: 20px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
 .show--favorite {
-  border: solid 2px red;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  padding: 20px 40px 0 0;
+  background-color: pink;
+}
+.favoriteItem {
+  width: 70px;
+  height: 98px;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 10px;
+  justify-content: flex-end;
 }
