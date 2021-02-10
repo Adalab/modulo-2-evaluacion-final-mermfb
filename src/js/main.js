@@ -244,7 +244,6 @@ function handleShow(ev) {
 function saveInLocalStorage() {
   const stringFavorites = JSON.stringify(favorites);
   localStorage.setItem("favorites", stringFavorites);
-  console.log(stringFavorites);
 }
 
 function getFromLocalStorage() {
