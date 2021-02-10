@@ -1,24 +1,38 @@
+.wrapper {
+  padding: 20px;
+}
+.maintitle {
+  margin-left: 42%;
+}
+
 .resultsection {
   display: flex;
+  justify-content: space-between;
+  padding: 20px;
 }
 .favoritessection {
-  margin-right: 100px;
+  margin: 0;
 }
 
 .js-showlist {
   list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
 }
 
 .js-show {
-  margin: 20px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  padding: 20px 40px 30px 40px;
+  background-color: pink;
 }
 
 .show--favorite {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  padding: 20px 40px 0 0;
-  background-color: pink;
+  padding: 20px 40px 30px 40px;
+  background-color: rgb(241, 18, 55);
 }
 .favoriteItem {
   width: 70px;

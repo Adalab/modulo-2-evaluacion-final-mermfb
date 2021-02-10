@@ -153,11 +153,12 @@ resultSectionElement.appendChild(list);
 
 function paintShows() {
   list.innerHTML = ""; //REVISAR mezclando DOM avanzado con innerHTML!!!
-
   for (let show of shows) {
     let isFavoriteClass;
     if (isFavoriteShow(show)) {
       isFavoriteClass = "show--favorite";
+    } else {
+      isFavoriteClass = "";
     }
     const id = show.show.id;
     const name = show.show.name;
@@ -222,9 +223,8 @@ function listenShowsEvents() {
 //comprobar si el show está en favoritos, si no meterlo
 function handleShow(ev) {
   // obtengo el id del clickado
-  const clickedShowId = ev.currentTarget.id;
+  const clickedShowId = parseInt(ev.currentTarget.id);
   console.log("id del show clickado", clickedShowId);
-  console.log(favorites.id);
   const favoritesFoundIndex = favorites.findIndex(function (favorite) {
     return favorite.show.id === clickedShowId;
   });
@@ -232,11 +232,24 @@ function handleShow(ev) {
     return show.show.id === clickedShowId;
   });
 
+  if (favoritesFoundIndex === -1) {
+    // busco la paleta clickada en el array de paletas
+    const showFound = shows.find(function (show) {
+      return show.show.id === clickedShowId;
+    });
+  } else {
+    // si el findIndex me ha devuelto un número mayor o igual a 0 es que sí está en el array de favoritos
+    // quiero sacarlo de array de favoritos
+    // para utilizar splice necesito el índice del elemento que quiero borrar
+    // y quiero borrar un solo elemento
+    favorites.splice(favoritesFoundIndex, 1);
+  }
   console.log(showFound);
   // para luego añadirlo al array de favoritos
   favorites.push(showFound);
   console.log("Mis favoritas", favorites);
   paintShows();
+  paintFavorites();
 }
 
 //LOCAL STORAGE
