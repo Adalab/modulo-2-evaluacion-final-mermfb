@@ -6,7 +6,7 @@
 //CONSTANTES
 const formElement = document.querySelector(".form");
 const inputElement = document.querySelector(".input");
-const buttonElement = document.querySelector(".button");
+const buttonElement = document.querySelector(".searchButton");
 const resultSectionElement = document.querySelector(".resultsection");
 const favoritesSectionElement = document.querySelector(".favoritessection");
 const resetButton = document.querySelector(".resetButton");
