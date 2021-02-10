@@ -184,7 +184,6 @@ function resetFavorites() {
   favorites = [];
   paintFavorites();
   saveInLocalStorage();
-  console.log("FAVORITOS CON RESET", favorites);
 }
 
 //LOCAL STORAGE
