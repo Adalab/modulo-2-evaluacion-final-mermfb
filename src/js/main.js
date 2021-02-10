@@ -9,6 +9,7 @@ const inputElement = document.querySelector(".input");
 const buttonElement = document.querySelector(".button");
 const resultSectionElement = document.querySelector(".resultsection");
 const favoritesSectionElement = document.querySelector(".favoritessection");
+const resetButton = document.querySelector(".resetButton");
 let shows = [];
 let favorites = [];
 
@@ -31,6 +32,15 @@ function getDataFromApi() {
 //PAINT FAVORITES
 function paintFavorites() {
   favoritesSectionElement.innerHTML = "";
+  const favoritesTitle = document.createElement("h2");
+  const sectionTitle = document.createTextNode("Mis series favoritas");
+  favoritesTitle.appendChild(sectionTitle);
+  favoritesSectionElement.appendChild(favoritesTitle);
+  // const resetButton = document.createElement("div");
+  // resetButton.setAttribute("class", "resetButton");
+  // const resetText = document.createTextNode("RESET");
+  // resetButton.appendChild(resetText);
+  // favoritesSectionElement.appendChild(resetButton);
   const favoritesList = document.createElement("ul");
   favoritesSectionElement.appendChild(favoritesList);
   for (const favorite of favorites) {
@@ -42,7 +52,13 @@ function paintFavorites() {
     favoriteItem.setAttribute("class", "favoriteItem");
     favoriteItem.setAttribute("id", id);
     favoritesList.appendChild(favoriteItem);
+    const favoriteButton = document.createElement("div");
+    favoriteButton.setAttribute("class", "favoriteButton");
+    const favoriteX = document.createTextNode("X");
+    favoriteButton.appendChild(favoriteX);
+    favoriteItem.appendChild(favoriteButton);
     const itemTitle = document.createElement("h3");
+    itemTitle.setAttribute("class", "favoriteTitle");
     let titleContent = document.createTextNode(name);
     itemTitle.appendChild(titleContent);
     favoriteItem.appendChild(itemTitle);
@@ -57,6 +73,7 @@ function paintFavorites() {
     }
     favoriteItem.appendChild(itemImage);
   }
+  listenFavoritesEvents();
 }
 
 //más adelante habrá que escuchar las paletas o el botón X para sacar de favoritos
@@ -136,6 +153,16 @@ function listenShowsEvents() {
   saveInLocalStorage();
 }
 
+//escuchar shows favoritos
+
+function listenFavoritesEvents() {
+  const FavoriteElements = document.querySelectorAll(".favoriteItem");
+  for (let FavoriteElement of FavoriteElements) {
+    FavoriteElement.addEventListener("click", handleShow);
+  }
+  saveInLocalStorage();
+}
+
 //comprobar si el show está en favoritos, si no meterlo
 function handleShow(ev) {
   // obtengo el id del clickado
@@ -169,6 +196,14 @@ function handleShow(ev) {
   paintFavorites();
 }
 
+//RESET FAVORITOS
+function resetFavorites() {
+  favorites = [];
+  paintFavorites();
+  saveInLocalStorage();
+  console.log("FAVORITOS CON RESET", favorites);
+}
+
 //LOCAL STORAGE
 
 function saveInLocalStorage() {
@@ -193,3 +228,4 @@ console.log("Mis favoritas", favorites);
 buttonElement.addEventListener("click", getDataFromApi);
 getFromLocalStorage();
 paintFavorites();
+resetButton.addEventListener("click", resetFavorites);
