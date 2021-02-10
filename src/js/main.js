@@ -238,6 +238,11 @@ function handleShow(ev) {
     const showFound = shows.find(function (show) {
       return show.show.id === clickedShowId;
     });
+
+    console.log(showFound);
+    // para luego añadirlo al array de favoritos
+    favorites.push(showFound);
+    console.log("Mis favoritas", favorites);
   } else {
     // si el findIndex me ha devuelto un número mayor o igual a 0 es que sí está en el array de favoritos
     // quiero sacarlo de array de favoritos
@@ -245,10 +250,6 @@ function handleShow(ev) {
     // y quiero borrar un solo elemento
     favorites.splice(favoritesFoundIndex, 1);
   }
-  console.log(showFound);
-  // para luego añadirlo al array de favoritos
-  favorites.push(showFound);
-  console.log("Mis favoritas", favorites);
   paintShows();
   paintFavorites();
 }
