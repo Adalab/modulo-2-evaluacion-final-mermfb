@@ -13,8 +13,8 @@
   </head>
 
   <body>
-    <main>
-      <h2>Buscador de series</h2>
+    <main class="wrapper">
+      <h1 class="maintitle">Buscador de series</h1>
       <form class="form">
         <label for="search"></label>
         <input
@@ -23,10 +23,13 @@
           id="search"
           placeholder="Introduce tu búsqueda"
         />
-        <button class="button" type="submit">Search</button>
+        <button class="searchButton" type="submit">Search</button>
       </form>
       <section class="resultsection">
-        <div class="favoritessection">Mis series favoritas</div>
+        <div class="wrapperFavorites">
+          <div class="resetButton">Reset</div>
+          <div class="favoritessection">Mis series favoritas</div>
+        </div>
       </section>
     </main>
 
