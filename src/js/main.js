@@ -115,6 +115,7 @@ function getDataFromApi() {
 
 //PAINT FAVORITES
 function paintFavorites() {
+  favoritesSectionElement.innerHTML = "";
   const favoritesList = document.createElement("ul");
   favoritesSectionElement.appendChild(favoritesList);
   for (const favorite of favorites) {
