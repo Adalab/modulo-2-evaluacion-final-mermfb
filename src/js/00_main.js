@@ -182,6 +182,7 @@ function handleShow(ev) {
 //RESET FAVORITOS
 function resetFavorites() {
   favorites = [];
+  paintShows();
   paintFavorites();
   saveInLocalStorage();
 }
