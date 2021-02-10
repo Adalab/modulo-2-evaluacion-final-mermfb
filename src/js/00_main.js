@@ -16,67 +16,17 @@ let favorites = [];
 //SEARCH
 
 function getDataFromApi() {
-  const inputValue = inputElement.value; //no se puede sacar!!!!
+  event.preventDefault();
+  const inputValue = inputElement.value;
   const url = `http://api.tvmaze.com/search/shows?q=${inputValue}`;
 
-  event.preventDefault(); //el preventdefault tiene que estar aquí? Por qué?
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
       shows = data;
-      console.log(shows);
       paintShows();
     });
 }
-
-//PAINT FAVORITES
-function paintFavorites() {
-  favoritesSectionElement.innerHTML = "";
-  const favoritesTitle = document.createElement("h2");
-  const sectionTitle = document.createTextNode("Mis series favoritas");
-  favoritesTitle.appendChild(sectionTitle);
-  favoritesSectionElement.appendChild(favoritesTitle);
-  // const resetButton = document.createElement("div");
-  // resetButton.setAttribute("class", "resetButton");
-  // const resetText = document.createTextNode("RESET");
-  // resetButton.appendChild(resetText);
-  // favoritesSectionElement.appendChild(resetButton);
-  const favoritesList = document.createElement("ul");
-  favoritesSectionElement.appendChild(favoritesList);
-  for (const favorite of favorites) {
-    let isFavoriteClass;
-    const id = favorite.show.id;
-    const name = favorite.show.name;
-    isFavoriteClass = "show--favorite";
-    const favoriteItem = document.createElement("li");
-    favoriteItem.setAttribute("class", "favoriteItem");
-    favoriteItem.setAttribute("id", id);
-    favoritesList.appendChild(favoriteItem);
-    const favoriteButton = document.createElement("div");
-    favoriteButton.setAttribute("class", "favoriteButton");
-    const favoriteX = document.createTextNode("X");
-    favoriteButton.appendChild(favoriteX);
-    favoriteItem.appendChild(favoriteButton);
-    const itemTitle = document.createElement("h3");
-    itemTitle.setAttribute("class", "favoriteTitle");
-    let titleContent = document.createTextNode(name);
-    itemTitle.appendChild(titleContent);
-    favoriteItem.appendChild(itemTitle);
-    let itemImage = document.createElement("img");
-    if (favorite.show.image === null) {
-      itemImage.src = `https://via.placeholder.com/210x295/ffffff/666666/?
-      text=TV`;
-    } else if (favorite.show.image.medium === null) {
-      itemImage.src = favorite.show.image.original;
-    } else {
-      itemImage.src = favorite.show.image.medium;
-    }
-    favoriteItem.appendChild(itemImage);
-  }
-  listenFavoritesEvents();
-}
-
-//más adelante habrá que escuchar las paletas o el botón X para sacar de favoritos
 
 //PAINT SHOWS
 
@@ -85,7 +35,7 @@ list.setAttribute("class", "js-showlist");
 resultSectionElement.appendChild(list);
 
 function paintShows() {
-  list.innerHTML = ""; //REVISAR mezclando DOM avanzado con innerHTML!!!
+  list.innerHTML = "";
   for (let show of shows) {
     let isFavoriteClass;
     if (isFavoriteShow(show)) {
@@ -113,31 +63,71 @@ function paintShows() {
       itemImage.src = show.show.image.medium;
     }
     listItem.appendChild(itemImage);
-
-    console.log(listItem);
   }
-  listenShowsEvents(); //llamamos siempre después de pintar
+
+  listenShowsEvents();
 }
 
-function isFavoriteShow(show) {
-  // compruebo si el show que recibo por parámetro está en los favoritos
-  const favoriteFound = favorites.find((favorite) => {
-    console.log("dentro del find", show.show.id);
-    // la dificultad de esta función interna del find es saber que tengo que comparar
-    // yo consolearía console.log(favorite, palette) para ver los datos que debo comparar
-    console.log("favorite", favorite, "show", show);
+// compruebo si el show que recibo por parámetro está en los favoritos
 
+function isFavoriteShow(show) {
+  const favoriteFound = favorites.find((favorite) => {
     return favorite.show.id === show.show.id;
   });
 
-  console.log("show encontrado", favoriteFound, show.show.id);
-  // find devuelve undefined si no lo encuentra
-  // retorno si está o no está en favoritos
   if (favoriteFound === undefined) {
     return false;
   } else {
     return true;
   }
+}
+
+//PAINT FAVORITES
+function paintFavorites() {
+  favoritesSectionElement.innerHTML = "";
+  const favoritesList = document.createElement("ul");
+  const favoritesTitle = document.createElement("h2");
+  const sectionTitle = document.createTextNode("Mis series favoritas");
+  favoritesTitle.appendChild(sectionTitle);
+  favoritesSectionElement.appendChild(favoritesTitle);
+  favoritesSectionElement.appendChild(favoritesList);
+
+  for (const favorite of favorites) {
+    let isFavoriteClass;
+    const id = favorite.show.id;
+    const name = favorite.show.name;
+    isFavoriteClass = "show--favorite";
+
+    const favoriteItem = document.createElement("li");
+    favoriteItem.setAttribute("class", "favoriteItem");
+    favoriteItem.setAttribute("id", id);
+    favoritesList.appendChild(favoriteItem);
+
+    const favoriteButton = document.createElement("div");
+    favoriteButton.setAttribute("class", "favoriteButton");
+    favoriteItem.appendChild(favoriteButton);
+
+    const favoriteX = document.createTextNode("X");
+    favoriteButton.appendChild(favoriteX);
+
+    const itemTitle = document.createElement("h3");
+    let titleContent = document.createTextNode(name);
+    itemTitle.setAttribute("class", "favoriteTitle");
+    itemTitle.appendChild(titleContent);
+    favoriteItem.appendChild(itemTitle);
+    let itemImage = document.createElement("img");
+
+    if (favorite.show.image === null) {
+      itemImage.src = `https://via.placeholder.com/210x295/ffffff/666666/?
+      text=TV`;
+    } else if (favorite.show.image.medium === null) {
+      itemImage.src = favorite.show.image.original;
+    } else {
+      itemImage.src = favorite.show.image.medium;
+    }
+    favoriteItem.appendChild(itemImage);
+  }
+  listenFavoritesEvents();
 }
 
 //FAVORITES
@@ -146,7 +136,6 @@ function isFavoriteShow(show) {
 
 function listenShowsEvents() {
   const ShowElements = document.querySelectorAll(".js-show");
-  console.log(ShowElements);
   for (let ShowElement of ShowElements) {
     ShowElement.addEventListener("click", handleShow);
   }
@@ -163,7 +152,7 @@ function listenFavoritesEvents() {
   saveInLocalStorage();
 }
 
-//comprobar si el show está en favoritos, si no meterlo
+//COMPROBAR Y METER/QUITAR DE FAVORTIOS
 function handleShow(ev) {
   // obtengo el id del clickado
   const clickedShowId = parseInt(ev.currentTarget.id);
@@ -176,7 +165,7 @@ function handleShow(ev) {
   });
 
   if (favoritesFoundIndex === -1) {
-    // busco la paleta clickada en el array de paletas
+    // busco el show clickado en el array shows
     const showFound = shows.find(function (show) {
       return show.show.id === clickedShowId;
     });
@@ -187,9 +176,6 @@ function handleShow(ev) {
     console.log("Mis favoritas", favorites);
   } else {
     // si el findIndex me ha devuelto un número mayor o igual a 0 es que sí está en el array de favoritos
-    // quiero sacarlo de array de favoritos
-    // para utilizar splice necesito el índice del elemento que quiero borrar
-    // y quiero borrar un solo elemento
     favorites.splice(favoritesFoundIndex, 1);
   }
   paintShows();
@@ -213,17 +199,12 @@ function saveInLocalStorage() {
 
 function getFromLocalStorage() {
   const localStorageFavorites = localStorage.getItem("favorites");
-  // siempre que cojo datos del local storage tengo que comprobar si son válidos
-  // es decir si es la primera vez que entro en la página
   if (localStorageFavorites !== null) {
     const arrayFavorites = JSON.parse(localStorageFavorites);
     favorites = arrayFavorites;
-    // cada vez que modifico el array favorites vuelvo a pintar y a escuchar eventos
     paintShows();
-    console.log(favorites);
   }
 }
-console.log("Mis favoritas", favorites);
 
 buttonElement.addEventListener("click", getDataFromApi);
 getFromLocalStorage();
