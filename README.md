@@ -8,7 +8,7 @@ Este repositorio ha sido creado utilizando el Adalab Web Starter Kit. La página
 
 ## Página web
 
-Podrás visitar la página en https://beta.adalab.es/modulo-2-evaluacion-final-mermfb/. 
+Podrás visitar la página en http://beta.adalab.es/modulo-2-evaluacion-final-mermfb/. 
 
 ## Trabajar con este repositorio
 
