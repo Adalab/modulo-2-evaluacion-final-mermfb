@@ -2,9 +2,13 @@ $back-groundcolor: rgb(250, 207, 250);
 $main-color: rgb(240, 176, 240);
 $favorite-color: rgb(255, 177, 60);
 
+.body {
+  background-color: $back-groundcolor;
+}
+
 .wrapper {
   padding: 20px;
-  background-color: $back-groundcolor;
+
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 .maintitle {
