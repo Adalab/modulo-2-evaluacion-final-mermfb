@@ -3,6 +3,7 @@
 /* eslint-disable quotes */
 /* eslint-disable no-console */
 "use strict";
+
 //LOCAL STORAGE
 
 function saveInLocalStorage() {

@@ -4,57 +4,8 @@
 /* eslint-disable no-console */
 "use strict";
 
-//PAINT SHOWS
-
-function paintShows() {
-  list.innerHTML = "";
-  for (let show of shows) {
-    let isFavoriteClass;
-    if (isFavoriteShow(show)) {
-      isFavoriteClass = "show--favorite";
-    } else {
-      isFavoriteClass = "";
-    }
-    const id = show.show.id;
-    const name = show.show.name;
-    const listItem = document.createElement("li");
-    listItem.setAttribute("class", isFavoriteClass + " " + "js-show");
-    listItem.setAttribute("id", id);
-    list.appendChild(listItem);
-    const itemTitle = document.createElement("h3");
-    let titleContent = document.createTextNode(name);
-    itemTitle.appendChild(titleContent);
-    listItem.appendChild(itemTitle);
-    let itemImage = document.createElement("img");
-    if (show.show.image === null) {
-      itemImage.src = `https://via.placeholder.com/210x295/ffffff/666666/?
-        text=TV`;
-    } else if (show.show.image.medium === null) {
-      itemImage.src = show.show.image.original;
-    } else {
-      itemImage.src = show.show.image.medium;
-    }
-    listItem.appendChild(itemImage);
-  }
-
-  listenShowsEvents();
-}
-
-// compruebo si el show que recibo por parámetro está en los favoritos
-
-function isFavoriteShow(show) {
-  const favoriteFound = favorites.find((favorite) => {
-    return favorite.show.id === show.show.id;
-  });
-
-  if (favoriteFound === undefined) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
 //PAINT FAVORITES
+
 function paintFavorites() {
   favoritesSectionElement.innerHTML = "";
   const favoritesList = document.createElement("ul");
@@ -91,7 +42,7 @@ function paintFavorites() {
 
     if (favorite.show.image === null) {
       itemImage.src = `https://via.placeholder.com/210x295/ffffff/666666/?
-      text=TV`;
+        text=TV`;
     } else if (favorite.show.image.medium === null) {
       itemImage.src = favorite.show.image.original;
     } else {
@@ -99,19 +50,8 @@ function paintFavorites() {
     }
     favoriteItem.appendChild(itemImage);
   }
+
   listenFavoritesEvents();
-}
-
-//FAVORITES
-
-//escuchar shows pintados
-
-function listenShowsEvents() {
-  const ShowElements = document.querySelectorAll(".js-show");
-  for (let ShowElement of ShowElements) {
-    ShowElement.addEventListener("click", handleShow);
-  }
-  saveInLocalStorage();
 }
 
 //escuchar shows favoritos
@@ -124,7 +64,8 @@ function listenFavoritesEvents() {
   saveInLocalStorage();
 }
 
-//COMPROBAR Y METER/QUITAR DE FAVORTIOS
+//comprobar y meter/quitar de favoritos
+
 function handleShow(ev) {
   // obtengo el id del clickado
   const clickedShowId = parseInt(ev.currentTarget.id);
@@ -147,6 +88,7 @@ function handleShow(ev) {
     // si el findIndex me ha devuelto un número mayor o igual a 0 es que sí está en el array de favoritos
     favorites.splice(favoritesFoundIndex, 1);
   }
+
   paintShows();
   paintFavorites();
 }
