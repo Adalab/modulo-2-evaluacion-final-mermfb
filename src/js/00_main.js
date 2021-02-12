@@ -12,6 +12,7 @@ const favoritesSectionElement = document.querySelector(".favoritessection");
 const resetButton = document.querySelector(".resetButton");
 let shows = [];
 let favorites = [];
+const recommendedLanguages = ["English", "Spanish", "Portuguese"];
 
 // //SEARCH
 
@@ -45,14 +46,30 @@ function paintShows() {
     }
     const id = show.show.id;
     const name = show.show.name;
+    const language = show.show.language;
     const listItem = document.createElement("li");
     listItem.setAttribute("class", isFavoriteClass + " " + "js-show");
     listItem.setAttribute("id", id);
     list.appendChild(listItem);
     const itemTitle = document.createElement("h3");
     let titleContent = document.createTextNode(name);
+    const languageItem = document.createElement("h4");
+    let languageContent = document.createTextNode(language);
+    languageItem.appendChild(languageContent);
     itemTitle.appendChild(titleContent);
     listItem.appendChild(itemTitle);
+    listItem.appendChild(languageItem);
+    if (isRecommended(show)) {
+      const recommendedLang = document.createElement("p");
+      let languageR = document.createTextNode("Recomendado");
+      recommendedLang.appendChild(languageR);
+      listItem.appendChild(recommendedLang);
+    } else {
+      const recommendedLang = document.createElement("p");
+      let languageR = document.createTextNode("No recomendado");
+      recommendedLang.appendChild(languageR);
+      listItem.appendChild(recommendedLang);
+    }
     let itemImage = document.createElement("img");
     if (show.show.image === null) {
       itemImage.src = `https://via.placeholder.com/210x295/ffffff/666666/?
@@ -66,6 +83,19 @@ function paintShows() {
   }
 
   listenShowsEvents();
+}
+
+//
+function isRecommended(show) {
+  const languageFound = recommendedLanguages.find((language) => {
+    return language === show.show.language;
+  });
+  if (languageFound === undefined) {
+    return false;
+  } else {
+    console.log("Idioma encontrado", languageFound);
+    return true;
+  }
 }
 
 // compruebo si el show que recibo por parámetro está en los favoritos
